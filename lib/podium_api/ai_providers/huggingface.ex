@@ -10,13 +10,29 @@ defmodule PodiumApi.AIProviders.HuggingFace do
       {"Content-Type", "application/json"}
     ]
 
+    history = PodiumApi.ChatServer.get_history()
+
+    messages =
+      [
+        %{role: "system", content: "You are a helpful assistant."}
+      ] ++
+      Enum.map(history, fn msg ->
+        cond do
+          String.starts_with?(msg, "User: ") ->
+            %{role: "user", content: String.replace_prefix(msg, "User: ", "")}
+
+          String.starts_with?(msg, "AI: ") ->
+            %{role: "assistant", content: String.replace_prefix(msg, "AI: ", "")}
+
+        true ->
+          %{role: "user", content: msg}
+      end
+    end)
+
     body =
       Jason.encode!(%{
         model: @model,
-        messages: [
-          %{role: "system", content: "You are a helpful assistant."},
-          %{role: "user", content: message}
-        ],
+        messages: messages,
         temperature: 0.7
       })
 
