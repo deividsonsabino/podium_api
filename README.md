@@ -1,18 +1,49 @@
-# PodiumApi
+# Podium-style AI Chat API (Phoenix + Elixir + Hugging Face)
 
-To start your Phoenix server:
+Backend API built with **Elixir/Phoenix** that exposes a simple chat interface and integrates with a hosted LLM using **Hugging Face Router**.
+It stores conversation history in-memory using a **GenServer**.
 
-* Run `mix setup` to install and setup dependencies
-* Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Features
+- Phoenix API endpoints:
+  - `POST /chat` → sends a user message and returns an AI reply
+  - `GET /history` → returns the in-memory conversation history
+- Pluggable AI providers (via env var):
+  - Hugging Face Router (OpenAI-compatible `/v1/chat/completions`)
+  - Mock provider (for local development)
+- Basic error handling for HTTP and provider responses
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Tech Stack
+- Elixir + Phoenix
+- GenServer / OTP
+- HTTPoison + Jason
+- Hugging Face Router (hosted model)
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Getting Started
 
-## Learn more
+### Requirements
+- Elixir/Erlang installed
+- (No database required)
 
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix
+### Setup
+```bash
+mix deps.get
+cp .env.example .env
+# edit .env with your HF token
+```
+
+Run
+mix phx.server
+API will be available at http://localhost:4000.
+
+POST /chat
+curl -X POST http://localhost:4000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Explain Elixir in simple terms"}'
+
+GET /history
+curl http://localhost:4000/history
+
+
+Environment Variables
+	•	HF_API_TOKEN - Hugging Face access token
+	•	AI_PROVIDER - hf or mock
