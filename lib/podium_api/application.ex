@@ -10,6 +10,7 @@ defmodule PodiumApi.Application do
     children = [
       PodiumApiWeb.Telemetry,
       # PodiumApi.Repo,
+      PodiumApi.ChatServer,
       {DNSCluster, query: Application.get_env(:podium_api, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: PodiumApi.PubSub},
       # Start a worker by calling: PodiumApi.Worker.start_link(arg)

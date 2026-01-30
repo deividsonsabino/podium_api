@@ -7,6 +7,9 @@ defmodule PodiumApiWeb.Router do
 
   scope "/api", PodiumApiWeb do
     pipe_through :api
+
+    get "/history", ChatController, :history
+    post "/chat", ChatController, :chat
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
