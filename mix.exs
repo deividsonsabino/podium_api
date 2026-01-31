@@ -52,7 +52,9 @@ defmodule PodiumApi.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:httpoison, "~> 2.0"},
-      {:jason, "~> 1.4"}
+      {:jason, "~> 1.4"},
+      {:dotenv_parser, "~> 2.0.0", only: [:dev, :test]},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
     ]
   end
 

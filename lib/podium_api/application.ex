@@ -7,6 +7,10 @@ defmodule PodiumApi.Application do
 
   @impl true
   def start(_type, _args) do
+    if Mix.env() in [:dev, :test] do
+      DotenvParser.load_file(".env")
+    end
+
     children = [
       PodiumApiWeb.Telemetry,
       # PodiumApi.Repo,
